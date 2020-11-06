@@ -6,3 +6,5 @@ This project started during New Zealand COVID-19 lockdown.  Initially as a C#, c
 It has been modified and upgraded as my knowledge improves as a result of IT study at the Open Polytechnic.
 
 Presently it is window form based.
+
+Added this line to check git.
