@@ -77,11 +77,12 @@ public class CelestialBody {
 	}
 	
 	//methods
-	
+	/*
 	public void resetPosition() {
 		setX(initialXPosition, UserInputs.WINDOW_WIDTH);
 		setY(initialYPosition, UserInputs.WINDOW_HEIGHT);
 	}
+	*/
 	
 	
 	
