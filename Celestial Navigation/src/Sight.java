@@ -16,6 +16,7 @@ public class Sight {
 	//private int temperature = UserInputs.TEMPERATURE;
 	//private int atmosphericPressure = UserInputs.ATMOSPHERIC_PRESSURE;
 	//private double heightOfObserver = UserInputs.HEIGHT_OF_OBSERVER;
+	private double sextantIndexError;
 	
 	
 	//constructor
@@ -30,6 +31,7 @@ public class Sight {
 	UTCOfSight = calculateUTCOfSight(localTimeOfSight, -localTimeZone);
 	UTCOfSightString = buildUTCOfSightString(UTCOfSight.toString());
 	interpolationFactor = calculateInterpolationFactor(UTCOfSight);
+	sextantIndexError = determineSextantIndexError(UserInputs.INDEX_ERROR);
 	}
 	
 	//setter methods
@@ -62,6 +64,10 @@ public class Sight {
 	public double getInterpolationFactor() {
 		return interpolationFactor;
 	}
+	
+	public double getSextantIndexError() {
+		return sextantIndexError;
+	}
 
 	
 	
@@ -75,14 +81,14 @@ public class Sight {
 	
 	
 	@SuppressWarnings("deprecation")
-	public double calculateInterpolationFactor(Date dateTime) {
+	private double calculateInterpolationFactor(Date dateTime) {
 		int minutes =  dateTime.getMinutes(); 
 		int seconds =  dateTime.getSeconds();
 		
 		return ((minutes / 60.0) + (seconds / 3600.0));
 	}
 	
-	public String buildUTCOfSightString(String str) {
+	private String buildUTCOfSightString(String str) {
 		String year = str.substring(25, 29);
 		String month = str.substring(4, 7);
 		switch (month) {
@@ -142,6 +148,19 @@ public class Sight {
 		return string;
 	}
 	
+	private double determineSextantIndexError(String indexError) {
+		String sign = indexError.substring(0,1);
+		int degrees = Integer.parseInt(indexError.substring(1, 3));
+		double minutes = Double.parseDouble(indexError.substring(4,8));
+		double error = 0.0;
+		if (sign.contentEquals("+")) {
+			error = 1 * (degrees + (minutes / 60.0));
+		} else if (sign.contentEquals("-")) {
+			error = -1 * (degrees + (minutes / 60.0));
+		} 
+		
+		return error;
+	}
 	
 }
 
