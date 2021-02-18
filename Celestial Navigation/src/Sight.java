@@ -13,9 +13,9 @@ public class Sight {
 	private Date UTCOfSight;
 	private String UTCOfSightString;
 	private double interpolationFactor;
-	//private int temperature = UserInputs.TEMPERATURE;
-	//private int atmosphericPressure = UserInputs.ATMOSPHERIC_PRESSURE;
-	//private double heightOfObserver = UserInputs.HEIGHT_OF_OBSERVER;
+	private int temperature = UserInputs.TEMPERATURE;
+	private int atmosphericPressure = UserInputs.ATMOSPHERIC_PRESSURE;
+	private double heightOfObserver = UserInputs.HEIGHT_OF_OBSERVER;
 	private double sextantIndexError;
 	
 	

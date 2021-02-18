@@ -1,8 +1,7 @@
 
 public class SunCalculation{
 
-		public SunCalculation () {
-			
+		public SunCalculation () {	
 		Sight sight;
 		sight = new Sight();
 		Sun sun;
@@ -10,21 +9,44 @@ public class SunCalculation{
 		DRPosition DRPosn;
 		DRPosn = new DRPosition();
 		
-		sight.setLocalTimeOfSightString(UserInputs.LOCAL_TIME_OF_SIGHT);
-		System.out.println(sight.getLocalTimeOfSightString());
-		System.out.println(sight.getLocalTimeZone());
-		System.out.println(sight.getUTCOfSightString());
-		System.out.printf("%.4f", sight.getInterpolationFactor());
-		System.out.println();
-		System.out.printf("%.4f", sun.getSemiDiameter());
-		System.out.println();
-		System.out.printf("%.4f", sight.getSextantIndexError());
-		System.out.println();
-		System.out.printf("%.4f", DRPosn.getDRLatitude());
-		System.out.println();
-		System.out.printf("%.4f", DRPosn.getDRLongitude());
-		System.out.println();
+		
+		double GHA = sun.getGHA0() + (sight.getInterpolationFactor() * (sun.getGHA1() - sun.getGHA0()));
+		if (GHA > 360 ) {
+			GHA = GHA -360;
 		}
 		
+		double DEC = sun.getDec0() + (sight.getInterpolationFactor() * (sun.getDec1() - sun.getDec0()));
+		
+		double LHA = GHA + DRPosn.getDRLongitude();
+		if (LHA > 360) {
+			LHA = LHA - 360;
+		} else if (LHA < 0) {
+			LHA = LHA + 360;
+		}
+		
+		double DECrad = DEC * Math.PI / 180;
+		double S = Math.sin(DECrad);
+		
+		double LHArad = LHA * Math.PI / 180;
+		double C = Math.cos(DECrad) * Math.cos(LHArad);
+		
+		double DRLATrad = DRPosn.getDRLatitude() * Math.PI / 180;
+		
+		double HCrad =  Math.asin((S * Math.sin(DRLATrad)) + (C * Math.cos(DRLATrad)));
+		double HC = HCrad / (Math.PI /180);
+		
+		
+		
+		
+		
+		public void PlotAzimuthAndIntercept(double Z, double P) {
+			if (Z < 100) {
+				System.out.println("Plot 0" + Double.toString(Z) + "T / " + Double.toString(P) + "nm");
+			}
+			else if (Z >= 100){
+				System.out.println("Plot " + Double.toString(Z) + "T / " + Double.toString(P) + "nm");
+			}
+		}
+		}
 }
  

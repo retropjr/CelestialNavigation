@@ -9,10 +9,10 @@ public class UserInputs {
 	public static final double HEIGHT_OF_OBSERVER = 2.0;
 	public static final String INDEX_ERROR = "-00 00.2"; // -on arc
 	//Sun  Moon?  Star?
-	public static final String GHA0 = "000 00.0";
-	public static final String GHA1 = "000 00.0";
-	public static final String DEC0 = "000 00.0";
-	public static final String DEC1 = "000 00.0";
+	public static final String GHA0 = "185 30.5";
+	public static final String GHA1 = "065 15.5";
+	public static final String DEC0 = "-15 30.1";
+	public static final String DEC1 = "+15 30.1";
 	//Sun  Moon?
 	public static final String SD = "16.1";
 	public static final String SEXTANT_ALTITUDE = "00 00.0";
