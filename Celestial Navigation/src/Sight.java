@@ -17,6 +17,7 @@ public class Sight {
 	private int atmosphericPressure = UserInputs.ATMOSPHERIC_PRESSURE;
 	private double heightOfObserver = UserInputs.HEIGHT_OF_OBSERVER;
 	private double sextantIndexError;
+	private double observedHeightOfBody;
 	
 	
 	//constructor
@@ -32,6 +33,7 @@ public class Sight {
 	UTCOfSightString = buildUTCOfSightString(UTCOfSight.toString());
 	interpolationFactor = calculateInterpolationFactor(UTCOfSight);
 	sextantIndexError = determineSextantIndexError(UserInputs.INDEX_ERROR);
+	observedHeightOfBody = determineObservedHeightOfBody(UserInputs.SEXTANT_ALTITUDE);
 	}
 	
 	//setter methods
@@ -69,7 +71,21 @@ public class Sight {
 		return sextantIndexError;
 	}
 
+	public double getHeightOfObserver() {
+		return heightOfObserver;
+	}
 	
+	public double getObservedHeightOfBody() {
+		return observedHeightOfBody;
+	}
+	
+	public double getTemperature() {
+		return temperature;
+	}
+	
+	public double getAtmosphericPressure() {
+		return atmosphericPressure;
+	}
 	
 	//methods
 	public Date calculateUTCOfSight(Date date, int hours) {
@@ -160,6 +176,16 @@ public class Sight {
 		} 
 		
 		return error;
+	}
+	
+	private double determineObservedHeightOfBody(String ht) {
+		int degrees = Integer.parseInt(ht.substring(0, 2));
+		double minutes = Double.parseDouble(ht.substring(3,7));
+		double height = 0.0;
+		
+		height = 1 * (degrees + (minutes / 60.0));
+		
+		return height;
 	}
 	
 }
