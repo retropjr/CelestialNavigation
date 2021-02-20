@@ -183,7 +183,7 @@ public class Sight {
 		double minutes = Double.parseDouble(ht.substring(3,7));
 		double height = 0.0;
 		
-		height = 1 * (degrees + (minutes / 60.0));
+		height = degrees + (minutes / 60.0);
 		
 		return height;
 	}

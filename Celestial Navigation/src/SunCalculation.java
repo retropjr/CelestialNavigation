@@ -12,7 +12,7 @@ public class SunCalculation{
 		
 		double GHA = sun.getGHA0() + (sight.getInterpolationFactor() * (sun.getGHA1() - sun.getGHA0()));
 		if (GHA > 360 ) {
-			GHA = GHA -360;
+			GHA = GHA - 360;
 		}
 		
 		double DEC = sun.getDec0() + (sight.getInterpolationFactor() * (sun.getDec1() - sun.getDec0()));
@@ -24,18 +24,18 @@ public class SunCalculation{
 			LHA = LHA + 360;
 		}
 		
-		double DECrad = DEC * Math.PI / 180;
+		double DECrad = DEC * (Math.PI / 180.0);
 		double S = Math.sin(DECrad);
 		
-		double LHArad = LHA * Math.PI / 180;
+		double LHArad = LHA * (Math.PI / 180.0);
 		double C = Math.cos(DECrad) * Math.cos(LHArad);
 		
-		double DRLATrad = DRPosn.getDRLatitude() * Math.PI / 180;
+		double DRLATrad = DRPosn.getDRLatitude() * (Math.PI / 180.0);
 		
 		double HCrad =  Math.asin((S * Math.sin(DRLATrad)) + (C * Math.cos(DRLATrad)));
-		double HC = HCrad / (Math.PI /180);
+		double HC = HCrad / (Math.PI /180.0);
 		
-		double X = ((S * Math.cos(DRLATrad)) - (C * Math.asin(DRLATrad))) / Math.cos(HCrad);
+		double X = ((S * Math.cos(DRLATrad)) - (C * Math.sin(DRLATrad))) / Math.cos(HCrad);
 		if (X > 1) {
 			X = 1;
 		} else if (X < -1) {
@@ -69,7 +69,7 @@ public class SunCalculation{
 		double R = f * Ro;
 		
 		double HP = 0.0024;
-		double HPrad = HP / (Math.PI / 180);
+		double HPrad = HP * (Math.PI / 180);
 		
 		double PArad = HPrad * Math.cos(Hrad);
 		double PA = PArad / (Math.PI / 180);
@@ -82,6 +82,8 @@ public class SunCalculation{
 		PlotAzimuthAndIntercept(Z, P);
 		}
 		
+		
+		
 		public void PlotAzimuthAndIntercept(double z, double p) {
 			if (z < 100) {
 				System.out.println("Plot 0" + Double.toString(z) + "T / " + Double.toString(p) + "nm");
@@ -90,6 +92,7 @@ public class SunCalculation{
 				System.out.println("Plot " + Double.toString(z) + "T / " + Double.toString(p) + "nm");
 			}
 		}
-		
+			
 }
+
  
