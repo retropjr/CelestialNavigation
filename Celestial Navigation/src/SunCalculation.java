@@ -86,11 +86,16 @@ public class SunCalculation{
 		
 		public void PlotAzimuthAndIntercept(double z, double p) {
 			if (z < 100) {
-				System.out.println("Plot 0" + Double.toString(z) + "T / " + Double.toString(p) + "nm");
+				System.out.printf("Plot 0" + Double.toString(z) + "T / ");
+				System.out.format("%.2f", p);
+				System.out.printf("nm");
 			}
 			else if (z >= 100){
-				System.out.println("Plot " + Double.toString(z) + "T / " + Double.toString(p) + "nm");
+				System.out.printf("Plot " + Double.toString(z) + "T / ");
+				System.out.format("%.2f", p);
+				System.out.printf("nm");
 			}
+			
 		}
 			
 }
