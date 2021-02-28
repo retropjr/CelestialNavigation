@@ -45,7 +45,9 @@ public class MainMenu {
 		JButton btnSunCalculation = new JButton("Sun Calculation");
 		btnSunCalculation.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				new SunCalculation();
+				//frame.setVisible(false);
+				new SunCalculationMenu();
+				
 			}
 		});
 		GroupLayout groupLayout = new GroupLayout(frame.getContentPane());
