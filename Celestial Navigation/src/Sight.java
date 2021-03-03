@@ -7,11 +7,9 @@ import java.util.Date;
 public class Sight {
 	
 	
-	//private String localTimeOfSightString = UserInputs.LOCAL_TIME_OF_SIGHT;
-	private String localTimeOfSightString = SunCalculationMenu.getLocalTimeOfSight();
+	private String localTimeOfSightString = UserInputs.LOCAL_TIME_OF_SIGHT;
 	private Date localTimeOfSight;
-	//private int localTimeZone = UserInputs.LOCAL_TIME_ZONE;
-	private int localTimeZone = SunCalculationMenu.getLocalTimeZone();
+	private int localTimeZone = UserInputs.LOCAL_TIME_ZONE;
 	private Date UTCOfSight;
 	private String UTCOfSightString;
 	private double interpolationFactor;
@@ -29,8 +27,10 @@ public class Sight {
 		localTimeOfSight = dateTimeFormat.parse(localTimeOfSightString);
 	}
 	catch(Exception e) {
-		
+	
 	}
+	
+	
 	UTCOfSight = calculateUTCOfSight(localTimeOfSight, -localTimeZone);
 	UTCOfSightString = buildUTCOfSightString(UTCOfSight.toString());
 	interpolationFactor = calculateInterpolationFactor(UTCOfSight);

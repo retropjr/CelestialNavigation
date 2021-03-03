@@ -3,6 +3,7 @@ public class SunCalculation{
 	
 		private String plot;
 		
+		
 		public SunCalculation () {	
 			Sight sight;
 			sight = new Sight();
@@ -10,6 +11,7 @@ public class SunCalculation{
 			sun = new Sun();
 			DRPosition DRPosn;
 			DRPosn = new DRPosition();
+			
 			
 			
 			
