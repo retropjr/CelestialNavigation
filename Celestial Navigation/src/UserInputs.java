@@ -2,7 +2,8 @@
 
 public class UserInputs {
 	//Sight
-	public static final String LOCAL_TIME_OF_SIGHT = "2021-02-20 13:30:27";
+	public static final String BODY = "Sun";
+	//public static final String LOCAL_TIME_OF_SIGHT = "2021-02-20 13:30:27";
 	public static final int LOCAL_TIME_ZONE = 13;
 	public static final int TEMPERATURE = 24; 
 	public static final int ATMOSPHERIC_PRESSURE = 1024;

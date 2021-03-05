@@ -5,16 +5,21 @@ public class SunCalculation{
 		
 		
 		public SunCalculation () {	
+			
 			Sight sight;
-			sight = new Sight();
+			sight = new Sight("2020-02-10 12:12:13", 13);
+			
 			Sun sun;
 			sun = new Sun();
+			
 			DRPosition DRPosn;
 			DRPosn = new DRPosition();
 			
+			SunSightDetails sunSightDetails = new SunSightDetails(sight);
+			sunSightDetails.setVisible(true);
 			
 			
-			
+				
 			double GHA = sun.getGHA0() + (sight.getInterpolationFactor() * (sun.getGHA1() - sun.getGHA0()));
 			if (GHA > 360 ) {
 				GHA = GHA - 360;
@@ -91,13 +96,15 @@ public class SunCalculation{
 				plot = "Plot " + Double.toString(Z) + "T / " + Double.toString((Math.round((P * 100.00)) / 100.00)) + "nm";
 			}
 			
+			//sunSightInputs.setTextFieldPlot(plot);
+			System.out.println(getPlot());
+			
 		}
 		
 		//getter methods
 		public String getPlot() {
 			return plot;
 		}
-		
 			
 }
 

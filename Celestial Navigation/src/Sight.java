@@ -7,9 +7,10 @@ import java.util.Date;
 public class Sight {
 	
 	
-	private String localTimeOfSightString = UserInputs.LOCAL_TIME_OF_SIGHT;
+	
+	private String localTimeOfSightString;
 	private Date localTimeOfSight;
-	private int localTimeZone = UserInputs.LOCAL_TIME_ZONE;
+	private int localTimeZone;
 	private Date UTCOfSight;
 	private String UTCOfSightString;
 	private double interpolationFactor;
@@ -21,7 +22,9 @@ public class Sight {
 	
 	
 	//constructor
-	public Sight() {
+	public Sight(String timeOfSight, int timeZone) {
+	localTimeOfSightString = timeOfSight;
+	localTimeZone = timeZone;
 	SimpleDateFormat dateTimeFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 	try {
 		localTimeOfSight = dateTimeFormat.parse(localTimeOfSightString);
@@ -39,9 +42,7 @@ public class Sight {
 	}
 	
 	//setter methods
-	public void setLocalTimeOfSightString(String timeOfSight) {
-		localTimeOfSightString = timeOfSight;
-	}
+	
 	
 	
 	//getter methods
@@ -189,6 +190,8 @@ public class Sight {
 		
 		return height;
 	}
+	
+
 	
 }
 
