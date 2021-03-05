@@ -4,10 +4,8 @@ public class SunCalculation{
 		private String plot;
 		
 		
-		public SunCalculation () {	
-			
-			Sight sight;
-			sight = new Sight("2020-02-10 12:12:13", 13);
+		
+		public SunCalculation (Sight sight) {	
 			
 			Sun sun;
 			sun = new Sun();
@@ -15,9 +13,9 @@ public class SunCalculation{
 			DRPosition DRPosn;
 			DRPosn = new DRPosition();
 			
-			SunSightDetails sunSightDetails = new SunSightDetails(sight);
-			sunSightDetails.setVisible(true);
-			
+			//Sight sight;
+			//sight = new Sight(UserInputs.LOCAL_TIME_OF_SIGHT, UserInputs.LOCAL_TIME_ZONE);
+					
 			
 				
 			double GHA = sun.getGHA0() + (sight.getInterpolationFactor() * (sun.getGHA1() - sun.getGHA0()));

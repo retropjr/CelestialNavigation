@@ -54,7 +54,9 @@ public class MainMenu {
 		JMenuItem mntmSun = new JMenuItem("Sun");
 		mntmSun.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				new SunCalculation();
+				
+				new SunSightDetails();
+				//new SunCalculation();
 			}
 		});
 		mnLopCalculation.add(mntmSun);

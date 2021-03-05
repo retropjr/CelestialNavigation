@@ -6,10 +6,10 @@ import java.util.Date;
 
 public class Sight {
 	
-	
-	
+	//private String localTimeOfSightString = UserInputs.LOCAL_TIME_OF_SIGHT;
 	private String localTimeOfSightString;
 	private Date localTimeOfSight;
+	//private int localTimeZone = sightDetails.getTimeZone();
 	private int localTimeZone;
 	private Date UTCOfSight;
 	private String UTCOfSightString;
@@ -22,9 +22,9 @@ public class Sight {
 	
 	
 	//constructor
-	public Sight(String timeOfSight, int timeZone) {
-	localTimeOfSightString = timeOfSight;
-	localTimeZone = timeZone;
+	public Sight(String local, int tZ) {
+	localTimeOfSightString = local;
+	localTimeZone = tZ;
 	SimpleDateFormat dateTimeFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 	try {
 		localTimeOfSight = dateTimeFormat.parse(localTimeOfSightString);
