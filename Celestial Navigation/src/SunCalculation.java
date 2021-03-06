@@ -4,7 +4,6 @@ public class SunCalculation{
 		private String plot;
 		
 		
-		
 		public SunCalculation (Sight sight) {	
 			
 			Sun sun;
@@ -12,11 +11,6 @@ public class SunCalculation{
 			
 			DRPosition DRPosn;
 			DRPosn = new DRPosition();
-			
-			//Sight sight;
-			//sight = new Sight(UserInputs.LOCAL_TIME_OF_SIGHT, UserInputs.LOCAL_TIME_ZONE);
-					
-			
 				
 			double GHA = sun.getGHA0() + (sight.getInterpolationFactor() * (sun.getGHA1() - sun.getGHA0()));
 			if (GHA > 360 ) {
@@ -92,11 +86,7 @@ public class SunCalculation{
 			}
 			else if (Z >= 100){
 				plot = "Plot " + Double.toString(Z) + "T / " + Double.toString((Math.round((P * 100.00)) / 100.00)) + "nm";
-			}
-			
-			//sunSightInputs.setTextFieldPlot(plot);
-			System.out.println(getPlot());
-			
+			}			
 		}
 		
 		//getter methods

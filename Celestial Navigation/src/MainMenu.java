@@ -41,8 +41,9 @@ public class MainMenu {
 	 */
 	private void initialize() {
 		frmCelestialNavigation = new JFrame();
+		frmCelestialNavigation.setResizable(false);
 		frmCelestialNavigation.setTitle("Celestial Navigation");
-		frmCelestialNavigation.setSize(600,400);
+		frmCelestialNavigation.setSize(370, 150);
 		
 		
 		JMenuBar menuBar = new JMenuBar();
@@ -56,7 +57,7 @@ public class MainMenu {
 			public void actionPerformed(ActionEvent arg0) {
 				
 				new SunSightDetails();
-				//new SunCalculation();
+				
 			}
 		});
 		mnLopCalculation.add(mntmSun);
