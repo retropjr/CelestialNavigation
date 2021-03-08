@@ -4,13 +4,7 @@ public class SunCalculation{
 		private String plot;
 		
 		
-		public SunCalculation (Sight sight) {	
-			
-			Sun sun;
-			sun = new Sun();
-			
-			DRPosition DRPosn;
-			DRPosn = new DRPosition();
+		public SunCalculation (Sight sight, Sun sun, DRPosition DRPosn) {	
 				
 			double GHA = sun.getGHA0() + (sight.getInterpolationFactor() * (sun.getGHA1() - sun.getGHA0()));
 			if (GHA > 360 ) {

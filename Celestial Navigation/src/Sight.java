@@ -6,25 +6,26 @@ import java.util.Date;
 
 public class Sight {
 	
-	//private String localTimeOfSightString = UserInputs.LOCAL_TIME_OF_SIGHT;
 	private String localTimeOfSightString;
 	private Date localTimeOfSight;
-	//private int localTimeZone = sightDetails.getTimeZone();
 	private int localTimeZone;
 	private Date UTCOfSight;
 	private String UTCOfSightString;
 	private double interpolationFactor;
-	private int temperature = UserInputs.TEMPERATURE;
-	private int atmosphericPressure = UserInputs.ATMOSPHERIC_PRESSURE;
-	private double heightOfObserver = UserInputs.HEIGHT_OF_OBSERVER;
+	private int temperature;
+	private int atmosphericPressure;
+	private double heightOfObserver;
 	private double sextantIndexError;
 	private double observedHeightOfBody;
 	
 	
 	//constructor
-	public Sight(String local, int tZ) {
+	public Sight(String local, int tZ, int temp, int press, double height) {
 	localTimeOfSightString = local;
 	localTimeZone = tZ;
+	temperature = temp;
+	atmosphericPressure = press;
+	heightOfObserver = height;
 	SimpleDateFormat dateTimeFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 	try {
 		localTimeOfSight = dateTimeFormat.parse(localTimeOfSightString);

@@ -8,20 +8,20 @@ public class Sun extends CelestialBody {
 	private String GHA1String;
 	private double GHA1;
 	private String dec0String;
-	private double dec0;
+	private double DEC0;
 	private String dec1String;
-	private double dec1;
+	private double DEC1;
 	
-	public Sun() {
-		semiDiameter = CalculateSD(UserInputs.SD);
-		setGHA0String(UserInputs.GHA0);
+	public Sun(String gha0, String gha1, String dec0, String dec1, String sd) {
+		setGHA0String(gha0);
 		GHA0 = determineGHA(GHA0String);
-		setGHA1String(UserInputs.GHA1);
+		setGHA1String(gha1);
 		GHA1 = determineGHA(GHA1String);
-		setDec0String(UserInputs.DEC0);
-		dec0 = determineDec(dec0String);
-		setDec1String(UserInputs.DEC1);
-		dec1 = determineDec(dec1String);
+		setDec0String(dec0);
+		DEC0 = determineDec(dec0String);
+		setDec1String(dec1);
+		DEC1 = determineDec(dec1String);
+		semiDiameter = CalculateSD(sd);
 	}
 	
 	//setter methods
@@ -56,11 +56,11 @@ public class Sun extends CelestialBody {
 	}
 	
 	public double getDec0() {
-		return dec0;
+		return DEC0;
 	}
 	
 	public double getDec1() {
-		return dec1;
+		return DEC1;
 	}
 	
 	//methods

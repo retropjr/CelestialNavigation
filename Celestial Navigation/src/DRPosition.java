@@ -7,10 +7,10 @@ public class DRPosition {
 	private double DRLongitude;
 	
 	//constructor
-	public DRPosition() {
-		setDRLatitudeString(UserInputs.DR_Latitude);
+	public DRPosition(String drLat, String drLong) {
+		setDRLatitudeString(drLat);
 		DRLatitude = determineLatitude(DRLatitudeString);
-		setDRLongitudeString(UserInputs.DR_Longitude);
+		setDRLongitudeString(drLong);
 		DRLongitude = determineLongitude(DRLongitudeString);
 	}
 	

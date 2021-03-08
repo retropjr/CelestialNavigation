@@ -38,6 +38,8 @@ public class SunSightDetails extends JFrame {
 	
 
 	private Sight sight; 
+	private Sun sun;
+	private DRPosition DRPosn;
 	private SunCalculation sunCalculation;
 	private JButton btnMainMenu;
 	
@@ -46,7 +48,6 @@ public class SunSightDetails extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	@SuppressWarnings("deprecation")
 	public SunSightDetails() {
 		setResizable(false);
 		setTitle("Sun Sight Details");
@@ -73,7 +74,7 @@ public class SunSightDetails extends JFrame {
 		contentPane.add(lblLocalTimeZone);
 		
 		spinnerLocalTimeZone = new JSpinner();
-		spinnerLocalTimeZone.setModel(new SpinnerNumberModel(new Integer(12), new Integer(-13), new Integer(+13), new Integer(1)));
+		spinnerLocalTimeZone.setModel(new SpinnerNumberModel(12, -13, 13, 1));
 		spinnerLocalTimeZone.setBounds(320, 35, 60, 20);
 		contentPane.add(spinnerLocalTimeZone);
 		
@@ -82,14 +83,14 @@ public class SunSightDetails extends JFrame {
 		contentPane.add(lblTemperature);
 		
 		spinnerTemperature = new JSpinner();
-		spinnerTemperature.setModel(new SpinnerNumberModel(new Integer(15), new Integer (-20), new Integer (50), new Integer(1)));
+		spinnerTemperature.setModel(new SpinnerNumberModel(15,-20, 50, 1));
 		spinnerTemperature.setBounds(320, 60, 60, 20);
 		contentPane.add(spinnerTemperature);
 		
 		JButton btnCalculateUTC = new JButton("Calculate UTC of sight");
 		btnCalculateUTC.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				sight = new Sight(getLocalTimeOfSight(), getTimeZone());
+				sight = new Sight(getLocalTimeOfSight(), getTimeZone(), getTemperature(), getPressure(), getHt());
 				textFieldTimeOfSightUTC.setText(sight.getUTCOfSightString());
 			}
 		});
@@ -99,7 +100,7 @@ public class SunSightDetails extends JFrame {
 		contentPane.add(lblPressure);
 		
 		spinnerPressure = new JSpinner();
-		spinnerPressure.setModel(new SpinnerNumberModel(new Integer(1013), new Integer(-940), new Integer (1060), new Integer(1)));
+		spinnerPressure.setModel(new SpinnerNumberModel(1013, -940, 1060, 1));
 		spinnerPressure.setBounds(320, 85, 60, 20);
 		contentPane.add(spinnerPressure);
 		
@@ -108,7 +109,8 @@ public class SunSightDetails extends JFrame {
 		contentPane.add(lblObserverHeight);
 		
 		spinnerObserverHeight = new JSpinner();
-		spinnerObserverHeight.setModel(new SpinnerNumberModel(new Double(2.0), new Double(0.0), new Double (100.0), new Double(1.0)));
+		
+		spinnerObserverHeight.setModel(new SpinnerNumberModel(2.0, 0.0, 100.0, 1.0));
 		spinnerObserverHeight.setBounds(320, 110, 60, 20);
 		contentPane.add(spinnerObserverHeight);
 		
@@ -224,7 +226,9 @@ public class SunSightDetails extends JFrame {
 		JButton btnCalculateLOP = new JButton("Calculate Line Of Position");
 		btnCalculateLOP.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				sunCalculation = new SunCalculation(sight);
+				sun = new Sun(getGHA0(), getGHA1(), getDEC0(), getDEC1(), getSD());
+				DRPosn = new DRPosition(getDRLat(), getDRLon());
+				sunCalculation = new SunCalculation(sight, sun, DRPosn);
 				textFieldPlot.setText(sunCalculation.getPlot());
 			}
 		});
@@ -256,4 +260,55 @@ public class SunSightDetails extends JFrame {
 		int lTZ = (int) spinnerLocalTimeZone.getValue();
 		return lTZ;
 	}
+	
+	public int getTemperature() {
+		int temp = (int) spinnerTemperature.getValue();
+		return temp;
+	}
+	
+	public int getPressure() {
+		int press = (int) spinnerPressure.getValue();
+		return press;
+	}
+	
+	public double getHt() {
+		double height = (double) spinnerObserverHeight.getValue();
+		return height;
+	}
+		
+	public String getGHA0() {
+		String GHA0 = textFieldGHA0.getText();
+		return GHA0;
+	}
+	
+	public String getGHA1() {
+		String GHA1 = textFieldGHA1.getText();
+		return GHA1;
+	}
+	
+	public String getDEC0() {
+		String DEC0 = textFieldDEC0.getText();
+		return DEC0;
+	}
+	
+	public String getDEC1() {
+		String DEC1 = textFieldDEC1.getText();
+		return DEC1;
+	}
+	
+	public String getSD() {
+		String SD = textFieldSDSun.getText();
+		return SD;
+	}
+	
+	public String getDRLat() {
+		String lat = textFieldDRLat.getText();
+		return lat;
+	}
+	
+	public String getDRLon() {
+		String lon = textFieldDRLon.getText();
+		return lon;
+	}
+	
 }
