@@ -81,6 +81,14 @@ public class MainMenu {
 		JMenu mnMeridianAltitude = new JMenu("Meridian Altitude");
 		menuBar.add(mnMeridianAltitude);
 		
+		JMenuItem mntmMeridianPassage = new JMenuItem("Meridian Passage");
+		mntmMeridianPassage.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				new MeridianAltitudeDetails();
+			}
+		});
+		mnMeridianAltitude.add(mntmMeridianPassage);
+		
 		JMenu mnStarFinder = new JMenu("Star Finder");
 		menuBar.add(mnStarFinder);
 	}
