@@ -38,9 +38,31 @@ public class Sight {
 	UTCOfSight = calculateUTCOfSight(localTimeOfSight, -localTimeZone);
 	UTCOfSightString = buildUTCOfSightString(UTCOfSight.toString());
 	interpolationFactor = calculateInterpolationFactor(UTCOfSight);
-	sextantIndexError = determineSextantIndexError(UserInputs.INDEX_ERROR);
-	observedHeightOfBody = determineObservedHeightOfBody(UserInputs.SEXTANT_ALTITUDE);
+	//sextantIndexError = determineSextantIndexError(error);
+	//observedHeightOfBody = determineObservedHeightOfBody(sextantAlt);
 	}
+	
+	public Sight(String local, int tZ, int temp, int press, double height, String error, String sextantAlt) {
+		localTimeOfSightString = local;
+		localTimeZone = tZ;
+		temperature = temp;
+		atmosphericPressure = press;
+		heightOfObserver = height;
+		SimpleDateFormat dateTimeFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		try {
+			localTimeOfSight = dateTimeFormat.parse(localTimeOfSightString);
+		}
+		catch(Exception e) {
+		
+		}
+		
+		
+		UTCOfSight = calculateUTCOfSight(localTimeOfSight, -localTimeZone);
+		UTCOfSightString = buildUTCOfSightString(UTCOfSight.toString());
+		interpolationFactor = calculateInterpolationFactor(UTCOfSight);
+		sextantIndexError = determineSextantIndexError(error);
+		observedHeightOfBody = determineObservedHeightOfBody(sextantAlt);
+		}
 	
 	//setter methods
 	

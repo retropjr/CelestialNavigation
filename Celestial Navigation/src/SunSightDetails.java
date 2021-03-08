@@ -226,6 +226,7 @@ public class SunSightDetails extends JFrame {
 		JButton btnCalculateLOP = new JButton("Calculate Line Of Position");
 		btnCalculateLOP.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				sight = new Sight(getLocalTimeOfSight(), getTimeZone(), getTemperature(), getPressure(), getHt(), getIndexError(), getSextantAltitude());
 				sun = new Sun(getGHA0(), getGHA1(), getDEC0(), getDEC1(), getSD());
 				DRPosn = new DRPosition(getDRLat(), getDRLon());
 				sunCalculation = new SunCalculation(sight, sun, DRPosn);
@@ -311,4 +312,13 @@ public class SunSightDetails extends JFrame {
 		return lon;
 	}
 	
+	public String getIndexError() {
+		String error = textFieldSextantIndexError.getText();
+		return error;
+	}
+	
+	public String getSextantAltitude() {
+		String alt = textFieldHeightOfSun.getText();
+		return alt;
+	}
 }
