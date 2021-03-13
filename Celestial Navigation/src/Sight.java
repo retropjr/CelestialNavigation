@@ -19,7 +19,7 @@ public class Sight {
 	private double observedHeightOfBody;
 	
 	
-	//constructor
+	//constructors
 	public Sight(String local, int tZ, int temp, int press, double height) {
 	localTimeOfSightString = local;
 	localTimeZone = tZ;
@@ -33,7 +33,6 @@ public class Sight {
 	catch(Exception e) {
 	
 	}
-	
 	
 	UTCOfSight = calculateUTCOfSight(localTimeOfSight, -localTimeZone);
 	UTCOfSightString = buildUTCOfSightString(UTCOfSight.toString());
@@ -63,6 +62,7 @@ public class Sight {
 		sextantIndexError = determineSextantIndexError(error);
 		observedHeightOfBody = determineObservedHeightOfBody(sextantAlt);
 		}
+	
 	
 	//setter methods
 	

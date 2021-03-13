@@ -6,13 +6,14 @@ public class DRPosition {
 	private double DRLatitude;
 	private double DRLongitude;
 	
-	//constructor
+	//constructors
 	public DRPosition(String drLat, String drLong) {
 		setDRLatitudeString(drLat);
 		DRLatitude = determineLatitude(DRLatitudeString);
 		setDRLongitudeString(drLong);
 		DRLongitude = determineLongitude(DRLongitudeString);
 	}
+	
 	
 	//setter methods
 	public void setDRLatitudeString(String str) {
