@@ -8,8 +8,6 @@ import javax.swing.SpinnerNumberModel;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
-import javax.swing.JSeparator;
-import javax.swing.JRadioButton;
 import javax.swing.JCheckBox;
 
 public class MeridianAltitudeDetails extends JFrame {
@@ -33,11 +31,11 @@ public class MeridianAltitudeDetails extends JFrame {
 	private JTextField textFieldSDSun;
 	private JTextField textFieldHeightOfBody;
 	private JTextField textFieldLatitude;
+	private JCheckBox chckbxNorth;
+	private JCheckBox chckbxSouth;
 	
 
-	private Sight sight; 
-	private Sun sun;
-	private DRPosition DRPosn;
+	
 	private MeridianAltitudeCalculation meridianAltitudeCalculation;
 	private JButton btnMainMenu;
 	private JTextField textFieldPassageUTC;
@@ -187,8 +185,11 @@ public class MeridianAltitudeDetails extends JFrame {
 		JButton btnCalculateLOP = new JButton("Calculate Latitude");
 		btnCalculateLOP.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				//meridianAltitudeCalculation = new MeridianAltitudeCalculation();
-				//textFieldLatitude.setText(meridianAltitudeCalculation.getLatitude());
+				meridianAltitudeCalculation = new MeridianAltitudeCalculation(getDRLon(), getTimeZone(), getAlmanacTimeOfPassage(),
+																			getDEC0(), getDEC1(), getHt(), getSextantAltitude(), getIndexError(),
+																			getSD(), getTemperature(), getPressure(), getNameOfMZD());
+				
+				textFieldLatitude.setText(meridianAltitudeCalculation.getLatitude());
 			}
 		});
 		
@@ -209,25 +210,25 @@ public class MeridianAltitudeDetails extends JFrame {
 		btnMainMenu.setBounds(393, 440, 117, 25);
 		contentPane.add(btnMainMenu);
 		
-		JCheckBox chckbxNewCheckBox = new JCheckBox("North");
-		chckbxNewCheckBox.setBounds(191, 277, 129, 23);
-		contentPane.add(chckbxNewCheckBox);
+		JCheckBox chckbxNorth = new JCheckBox("North");
+		chckbxNorth.setBounds(191, 277, 129, 23);
+		contentPane.add(chckbxNorth);
 		
-		JCheckBox chckbxNewCheckBox_1 = new JCheckBox("South");
-		chckbxNewCheckBox_1.setBounds(320, 277, 129, 23);
-		contentPane.add(chckbxNewCheckBox_1);
+		JCheckBox chckbxSouth = new JCheckBox("South");
+		chckbxSouth.setBounds(320, 277, 129, 23);
+		contentPane.add(chckbxSouth);
 		
 		JLabel lblNewLabel = new JLabel("Bearing of body:");
 		lblNewLabel.setBounds(20, 281, 175, 15);
 		contentPane.add(lblNewLabel);
 		
 		textFieldPassageUTC = new JTextField();
-		textFieldPassageUTC.setBounds(116, 109, 114, 19);
+		textFieldPassageUTC.setBounds(80, 109, 150, 19);
 		contentPane.add(textFieldPassageUTC);
 		textFieldPassageUTC.setColumns(10);
 		
 		textFieldPassageLocal = new JTextField();
-		textFieldPassageLocal.setBounds(340, 109, 114, 19);
+		textFieldPassageLocal.setBounds(320, 109, 150, 19);
 		contentPane.add(textFieldPassageLocal);
 		textFieldPassageLocal.setColumns(10);
 		
@@ -297,5 +298,17 @@ public class MeridianAltitudeDetails extends JFrame {
 	public String getSextantAltitude() {
 		String alt = textFieldHeightOfBody.getText();
 		return alt;
+	}
+	
+	public String getNameOfMZD() {
+		String name;
+		
+		if (chckbxNorth.isSelected()) {
+			name = "S";	
+		} else if (chckbxSouth.isSelected()) {
+			name = "N";
+		} else name = "C";
+		
+		return name;
 	}
 }

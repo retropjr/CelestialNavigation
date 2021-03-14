@@ -6,12 +6,41 @@ public class MeridianAltitudeCalculation {
 	private Date passageUTC;
 	private String passageLocalString;
 	private Date passageLocal;
-	private String latitude;
+	private String latitudeString;
+	private Double latitude;
 	private Date almanacPassage;
 	
 	
 	
 	public MeridianAltitudeCalculation (String lon, int tZ, String almanacPassageString) {	
+		double DRLon = determineLongitude(lon);
+		double timeToArc = DRLon / 15;
+		int timeToArcHours = (int) Math.floor(timeToArc);
+		int timeToArcMinutes = (int) ((timeToArc - timeToArcHours) * 60);
+		
+		SimpleDateFormat dateTimeFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		try {
+			almanacPassage = dateTimeFormat.parse(almanacPassageString);
+		}
+		catch(Exception e) {
+		
+		}
+		
+		
+		
+		passageUTC = calculateUTCOfPassage(almanacPassage, timeToArcHours, timeToArcMinutes);
+		passageUTCString = buildPassageString(passageUTC.toString());
+		
+		passageLocal = calculateLocalOfPassage(passageUTC, tZ);
+		passageLocalString = buildPassageString(passageLocal.toString());
+		 
+		
+	}
+	
+	
+		public MeridianAltitudeCalculation (String lon, int tZ, String almanacPassageString, String dec0, String dec1, double hT,
+											String heightOfBody, String indexError, String sd, double temperature, double atmosphericPressure,
+											String nameMZD) {	
 			
 		
 		double DRLon = determineLongitude(lon);
@@ -34,59 +63,23 @@ public class MeridianAltitudeCalculation {
 		passageUTC = calculateUTCOfPassage(almanacPassage, timeToArcHours, timeToArcMinutes);
 		passageUTCString = buildPassageString(passageUTC.toString());
 		
-		passageLocal = calculateLocalOfPassage(passageUTC, -tZ);
+		passageLocal = calculateLocalOfPassage(passageUTC, tZ);
 		passageLocalString = buildPassageString(passageLocal.toString());
+		 
+		double interpFactor = calculateInterpolationFactor(passageLocal);
 		
-		/*
-		double GHA = sun.getGHA0() + (sight.getInterpolationFactor() * (sun.getGHA1() - sun.getGHA0()));
-		if (GHA > 360 ) {
-			GHA = GHA - 360;
-		}
+		double DEC = determineDec(dec0) + (interpFactor * (determineDec(dec1) - determineDec(dec0)));
 		
-		double DEC = sun.getDec0() + (sight.getInterpolationFactor() * (sun.getDec1() - sun.getDec0()));
-		
-		double LHA = GHA + DRPosn.getDRLongitude();
-		if (LHA > 360) {
-			LHA = LHA - 360;
-		} else if (LHA < 0) {
-			LHA = LHA + 360;
-		}
-		
-		double DECrad = DEC * (Math.PI / 180.0);
-		double S = Math.sin(DECrad);
-		
-		double LHArad = LHA * (Math.PI / 180.0);
-		double C = Math.cos(DECrad) * Math.cos(LHArad);
-		
-		double DRLATrad = DRPosn.getDRLatitude() * (Math.PI / 180.0);
-		
-		double HCrad =  Math.asin((S * Math.sin(DRLATrad)) + (C * Math.cos(DRLATrad)));
-		double HC = HCrad / (Math.PI /180.0);
-		
-		double X = ((S * Math.cos(DRLATrad)) - (C * Math.sin(DRLATrad))) / Math.cos(HCrad);
-		if (X > 1) {
-			X = 1;
-		} else if (X < -1) {
-			X = -1;
-		}
-		
-		double Zrad = Math.acos(X);
-		
-		double Z;
-		if (LHA > 180) {
-			Z = Zrad / (Math.PI / 180);
-		} else {
-			Z = 360 - (Zrad / (Math.PI /180));
-		}
-		Z = Math.round(Z);
-		
-		double D = 0.0293 * Math.sqrt(sight.getHeightOfObserver());
-		
-		double H = sight.getObservedHeightOfBody() + sight.getSextantIndexError() - D;
+		double h = hT;
+		double D = 0.0293 * (Math.sqrt(h));
+				
+		double H = determineObservedHeightOfBody(heightOfBody) + determineSextantIndexError(indexError) - D;
 		double Hrad = H * (Math.PI / 180);
 		double Hcalc = (H + (7.32 / (H + 4.32))) * (Math.PI / 180);
 		
-		double f = (0.28 * sight.getAtmosphericPressure()) / (sight.getTemperature() + 273);
+		double SD = CalculateSD(sd);
+		
+		double f = (0.28 * atmosphericPressure) / (temperature + 273);
 		
 		double refractionConstant = 0.0167 * (Math.PI / 180);
 		
@@ -102,23 +95,34 @@ public class MeridianAltitudeCalculation {
 		double PArad = HPrad * Math.cos(Hrad);
 		double PA = PArad / (Math.PI / 180);
 		
-		double HO = H - R + PA + sun.getSemiDiameter();
+		double HO = H - R + PA + SD;
 		
-		double P = (HO - HC) * 60;
+		double MZD = 90 - HO;
 		
+		String nameOfMZD = nameMZD;
 		
-		if (Z < 100) {
-			latitude = "Plot 0" + Double.toString(Z) + "T / " + Double.toString((Math.round((P * 100.00)) / 100.00)) + "nm";
+		String nameOfDEC;
+		if (DEC < 0) {
+			nameOfDEC = "S";
+		} else nameOfDEC = "N";
+		
+		if (nameOfMZD == nameOfDEC) {
+			latitude = Math.abs(MZD) + Math.abs(DEC);
+		} else if (Math.abs(MZD) > Math.abs(DEC)) {
+			latitude = MZD - Math.abs(DEC);
+		} else {
+			latitude = Math.abs(DEC) - Math.abs(MZD);
 		}
-		else if (Z >= 100){
-			latitude = "Plot " + Double.toString(Z) + "T / " + Double.toString((Math.round((P * 100.00)) / 100.00)) + "nm";
-		}		
-		*/	
+		
+		
+		latitudeString = latitude.toString();
+	
+			
 	}
 	
 	//getter methods
 	public String getLatitude() {
-		return latitude;
+		return latitudeString;
 	}
 	
 	public String getPassageUTC() {
@@ -147,10 +151,11 @@ public class MeridianAltitudeCalculation {
 	
 	
 	public Date calculateUTCOfPassage(Date date, int hours, int minutes) {
-		final long hoursInMilliSec = hours * 60 * 60 *1000;
-		final long minutesInMilliSec = minutes * 60 * 1000;
+		long hoursInMilliSec = hours * 60 * 60 *1000;
+		long minutesInMilliSec = minutes * 60 * 1000;
 		
-		Date newDate = new Date(date.getTime() + hoursInMilliSec + minutesInMilliSec);
+		
+		Date newDate = new Date(date.getTime() - hoursInMilliSec - minutesInMilliSec);
 		
 		return newDate;
 	}
@@ -222,6 +227,57 @@ public class MeridianAltitudeCalculation {
 		String string = (year + "-" + month + "-" + day + " " + time);
 		return string;
 	}
+	
+	
+	@SuppressWarnings("deprecation")
+	private double calculateInterpolationFactor(Date dateTime) {
+		int minutes =  dateTime.getMinutes(); 
+		int seconds =  dateTime.getSeconds();
 		
+		return ((minutes / 60.0) + (seconds / 3600.0));
+	}
+	
+	private double determineDec(String dec) {
+		String sign = dec.substring(0,1);
+		int degrees = Integer.parseInt(dec.substring(1, 3));
+		double minutes = Double.parseDouble(dec.substring(4,8));
+		double declination = 0.0;
+		if (sign.contentEquals("+")) {
+			declination = 1 * (degrees + (minutes / 60.0));
+		} else if (sign.contentEquals("-")) {
+			declination = -1 * (degrees + (minutes / 60.0));
+		} 
+		
+		return declination;
+	}
+	
+	private double determineObservedHeightOfBody(String ht) {
+		int degrees = Integer.parseInt(ht.substring(0, 2));
+		double minutes = Double.parseDouble(ht.substring(3,7));
+		double height = 0.0;
+		
+		height = degrees + (minutes / 60.0);
+		
+		return height;
+	}
+	
+	private double determineSextantIndexError(String indexError) {
+		String sign = indexError.substring(0,1);
+		int degrees = Integer.parseInt(indexError.substring(1, 3));
+		double minutes = Double.parseDouble(indexError.substring(4,8));
+		double error = 0.0;
+		if (sign.contentEquals("+")) {
+			error = 1 * (degrees + (minutes / 60.0));
+		} else if (sign.contentEquals("-")) {
+			error = -1 * (degrees + (minutes / 60.0));
+		} 
+		
+		return error;
+	}
+	
+	public double CalculateSD(String inputSD) {
+		double SD = Double.parseDouble(inputSD) / 60.0;
+		return SD;
+	}	
 }
 
