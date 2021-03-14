@@ -19,7 +19,7 @@ public class MeridianAltitudeDetails extends JFrame {
 	 */
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
-	private JTextField textFieldLocalTimeOfSight;
+	private JTextField textFieldAlmanacTimeOfPassage;
 	private JSpinner spinnerLocalTimeZone;
 	private JSpinner spinnerTemperature;
 	private JSpinner spinnerPressure;
@@ -27,18 +27,18 @@ public class MeridianAltitudeDetails extends JFrame {
 	private JSpinner spinnerObserverHeight;
 	private JLabel lblIndexError;
 	private JTextField textFieldSextantIndexError;
-	private JTextField textFieldGHA0;
+	private JTextField textFieldDEC0;
 	private JTextField textFieldDEC1;
 	private JTextField textFieldDRLon;
 	private JTextField textFieldSDSun;
-	private JTextField textFieldHeightOfSun;
-	private JTextField textFieldPlot;
+	private JTextField textFieldHeightOfBody;
+	private JTextField textFieldLatitude;
 	
 
 	private Sight sight; 
 	private Sun sun;
 	private DRPosition DRPosn;
-	private SunCalculation sunCalculation;
+	private MeridianAltitudeCalculation meridianAltitudeCalculation;
 	private JButton btnMainMenu;
 	private JTextField textFieldPassageUTC;
 	private JTextField textFieldPassageLocal;
@@ -66,10 +66,10 @@ public class MeridianAltitudeDetails extends JFrame {
 		lblAlmanacTimeOfPassage.setBounds(30, 32, 300, 20);
 		contentPane.add(lblAlmanacTimeOfPassage);
 		
-		textFieldLocalTimeOfSight = new JTextField();
-		textFieldLocalTimeOfSight.setBounds(320, 32, 150, 20);
-		contentPane.add(textFieldLocalTimeOfSight);
-		textFieldLocalTimeOfSight.setColumns(10);
+		textFieldAlmanacTimeOfPassage = new JTextField();
+		textFieldAlmanacTimeOfPassage.setBounds(320, 32, 150, 20);
+		contentPane.add(textFieldAlmanacTimeOfPassage);
+		textFieldAlmanacTimeOfPassage.setColumns(10);
 		
 		JLabel lblLocalTimeZone = new JLabel("Enter local time zone:");
 		lblLocalTimeZone.setBounds(30, 51, 300, 20);
@@ -85,8 +85,9 @@ public class MeridianAltitudeDetails extends JFrame {
 		JButton btnCalculateUTC = new JButton("Calculate meridian passage UTC and Local:");
 		btnCalculateUTC.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				sight = new Sight(getLocalTimeOfSight(), getTimeZone(), getTemperature(), getPressure(), getHt());
-				textFieldTimeOfSightUTC.setText(sight.getUTCOfSightString());
+				meridianAltitudeCalculation = new MeridianAltitudeCalculation(getDRLon(), getTimeZone(), getAlmanacTimeOfPassage());
+				textFieldPassageUTC.setText(meridianAltitudeCalculation.getPassageUTC());
+				textFieldPassageLocal.setText(meridianAltitudeCalculation.getPassageLocal());
 			}
 		});
 		
@@ -120,7 +121,7 @@ public class MeridianAltitudeDetails extends JFrame {
 		contentPane.add(spinnerObserverHeight);
 		
 		lblIndexError = new JLabel("Enter sextant index error:");
-		lblIndexError.setBounds(30, 223, 300, 20);
+		lblIndexError.setBounds(30, 212, 300, 20);
 		contentPane.add(lblIndexError);
 		
 		textFieldSextantIndexError = new JTextField();
@@ -131,15 +132,15 @@ public class MeridianAltitudeDetails extends JFrame {
 		btnCalculateUTC.setBounds(12, 83, 437, 20);
 		contentPane.add(btnCalculateUTC);
 		
-		textFieldGHA0 = new JTextField();
-		textFieldGHA0.setToolTipText("DDD MM.M");
-		textFieldGHA0.setBounds(138, 352, 80, 20);
-		contentPane.add(textFieldGHA0);
-		textFieldGHA0.setColumns(10);
-		
 		JLabel lblDEC0 = new JLabel("DEC0:");
 		lblDEC0.setBounds(20, 319, 100, 20);
 		contentPane.add(lblDEC0);
+		
+		textFieldDEC0 = new JTextField();
+		textFieldDEC0.setToolTipText("(-S) +DD MM.M");
+		textFieldDEC0.setBounds(116, 320, 80, 20);
+		contentPane.add(textFieldDEC0);
+		textFieldDEC0.setColumns(10);
 		
 		JLabel lblDEC1 = new JLabel("DEC1:");
 		lblDEC1.setToolTipText("");
@@ -169,37 +170,35 @@ public class MeridianAltitudeDetails extends JFrame {
 		
 		textFieldSDSun = new JTextField();
 		textFieldSDSun.setToolTipText("(-upper limb) MM.M");
-		textFieldSDSun.setBounds(138, 320, 80, 20);
+		textFieldSDSun.setBounds(116, 352, 80, 20);
 		contentPane.add(textFieldSDSun);
 		textFieldSDSun.setColumns(10);
 		
-		JLabel lblSunHeight = new JLabel("Height:");
-		lblSunHeight.setBounds(30, 249, 100, 20);
-		contentPane.add(lblSunHeight);
+		JLabel lblBodyHeight = new JLabel("Height of body:");
+		lblBodyHeight.setBounds(30, 249, 150, 20);
+		contentPane.add(lblBodyHeight);
 		
-		textFieldHeightOfSun = new JTextField();
-		textFieldHeightOfSun.setToolTipText("Height of Sun DD MM.M");
-		textFieldHeightOfSun.setBounds(138, 255, 80, 15);
-		contentPane.add(textFieldHeightOfSun);
-		textFieldHeightOfSun.setColumns(10);
+		textFieldHeightOfBody = new JTextField();
+		textFieldHeightOfBody.setToolTipText("Height of Sun DD MM.M");
+		textFieldHeightOfBody.setBounds(228, 252, 80, 15);
+		contentPane.add(textFieldHeightOfBody);
+		textFieldHeightOfBody.setColumns(10);
 		
 		JButton btnCalculateLOP = new JButton("Calculate Latitude");
 		btnCalculateLOP.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				sight = new Sight(getLocalTimeOfSight(), getTimeZone(), getTemperature(), getPressure(), getHt(), getIndexError(), getSextantAltitude());
-				sun = new Sun(getGHA0(), getGHA1(), getDEC0(), getDEC1(), getSD());
-				DRPosn = new DRPosition(getDRLat(), getDRLon());
-				sunCalculation = new SunCalculation(sight, sun, DRPosn);
-				textFieldPlot.setText(sunCalculation.getPlot());
+				//meridianAltitudeCalculation = new MeridianAltitudeCalculation();
+				//textFieldLatitude.setText(meridianAltitudeCalculation.getLatitude());
 			}
 		});
+		
 		btnCalculateLOP.setBounds(20, 383, 450, 20);
 		contentPane.add(btnCalculateLOP);
 		
-		textFieldPlot = new JTextField();
-		textFieldPlot.setBounds(180, 415, 200, 20);
-		contentPane.add(textFieldPlot);
-		textFieldPlot.setColumns(10);
+		textFieldLatitude = new JTextField();
+		textFieldLatitude.setBounds(180, 415, 200, 20);
+		contentPane.add(textFieldLatitude);
+		textFieldLatitude.setColumns(10);
 		
 		btnMainMenu = new JButton("Main Menu");
 		btnMainMenu.addActionListener(new ActionListener() {
@@ -243,8 +242,8 @@ public class MeridianAltitudeDetails extends JFrame {
 	}
 	
 	//getter methods
-	public String getLocalTimeOfSight() {
-		return textFieldLocalTimeOfSight.getText();
+	public String getAlmanacTimeOfPassage() {
+		return textFieldAlmanacTimeOfPassage.getText();
 	}
 	
 	public int getTimeZone() {
@@ -266,16 +265,7 @@ public class MeridianAltitudeDetails extends JFrame {
 		double height = (double) spinnerObserverHeight.getValue();
 		return height;
 	}
-		
-	public String getGHA0() {
-		String GHA0 = textFieldGHA0.getText();
-		return GHA0;
-	}
 	
-	public String getGHA1() {
-		String GHA1 = textFieldGHA1.getText();
-		return GHA1;
-	}
 	
 	public String getDEC0() {
 		String DEC0 = textFieldDEC0.getText();
@@ -305,7 +295,7 @@ public class MeridianAltitudeDetails extends JFrame {
 	}
 	
 	public String getSextantAltitude() {
-		String alt = textFieldHeightOfSun.getText();
+		String alt = textFieldHeightOfBody.getText();
 		return alt;
 	}
 }
