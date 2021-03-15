@@ -7,8 +7,13 @@ public class MeridianAltitudeCalculation {
 	private String passageLocalString;
 	private Date passageLocal;
 	private String latitudeString;
-	private Double latitude;
+	private double latitude;
 	private Date almanacPassage;
+	private String nameOfDEC;
+	private String nameOfMZD;
+	private String hemisphere;
+	private double latitudeDegree;
+	private double latitudeMinute;
 	
 	
 	
@@ -99,9 +104,9 @@ public class MeridianAltitudeCalculation {
 		
 		double MZD = 90 - HO;
 		
-		String nameOfMZD = nameMZD;
+		nameOfMZD = nameMZD;
 		
-		String nameOfDEC;
+		
 		if (DEC < 0) {
 			nameOfDEC = "S";
 		} else nameOfDEC = "N";
@@ -115,7 +120,19 @@ public class MeridianAltitudeCalculation {
 		}
 		
 		
-		latitudeString = latitude.toString();
+		if (Math.abs(MZD) > Math.abs(DEC)) {
+			hemisphere = nameOfMZD;
+		} else {
+			hemisphere = nameOfDEC;
+		}
+		
+		latitudeDegree = Math.floor(latitude);
+		latitudeMinute = (latitude - latitudeDegree) * 60;
+		
+		String latitudeDegreeString = String.format("%.0f", latitudeDegree);
+		String latitudeMinuteString = String.format("%.1f", latitudeMinute);
+		
+		latitudeString = latitudeDegreeString + " " + latitudeMinuteString + " " + hemisphere;
 	
 			
 	}
